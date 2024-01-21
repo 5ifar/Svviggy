@@ -1,5 +1,5 @@
-# 🧬 Svvigy Database Schema
-The Svvigy DB Schema comprises of 7 Tables: Users, Restaurants, Delivery_Partner, Food, Menu, Orders & Order_Details.
+# 🧬 Svviggy Database Schema
+The Svviggy DB Schema comprises of 7 Tables: Users, Restaurants, Delivery_Partner, Food, Menu, Orders & Order_Details.
 
 ---
 
