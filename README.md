@@ -7,6 +7,6 @@ The Svvigy Project Schema & Case Study Queries have been executed using PostgreS
 
 ## 📚 Table of Contents
 Please find the resource links for the project below:
-- [Svvigy Schema]()
-- [Svvigy Data]()
-- [Case Study]()
+- [Svvigy Schema](https://github.com/5ifar/Svviggy/tree/main/Svviggy%20Schema)
+- [Svvigy Data](https://github.com/5ifar/Svviggy/tree/main/Svviggy%20Data)
+- [Case Study](https://github.com/5ifar/Svviggy/tree/main/Case%20Study%20Analysis%20using%20SQL%20Queries)
