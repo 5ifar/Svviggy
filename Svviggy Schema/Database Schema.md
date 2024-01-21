@@ -162,3 +162,8 @@ CREATE TABLE order_details (
 
 ## Entity Relationship Diagram
 
+![Svviggy Entity Relationship Diagram](https://github.com/5ifar/Svviggy/assets/146955609/26c1ffcf-a10f-46b0-9989-bbaef701f364)
+
+[Link to Interactive Svviggy Entity Relationship Diagram](https://dbdiagram.io/d/Svviggy-Entity-Relationship-Diagram-65ac992fac844320ae5c099a)
+
+---
