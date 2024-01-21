@@ -110,15 +110,15 @@ This table contains Details about the food, delivery details , order details and
 
 ```sql
 CREATE TABLE orders (
-  order_id int,
-  user_id int,
-  r_id int,
-  amount int,
-  date date, 
-  partner_id int,
-  delivery_time int,
-  delivery_rating int,
-  restaurant_rating int
+  order_id INT,
+  user_id INT,
+  r_id INT,
+  amount INT,
+  date DATE, 
+  partner_id INT,
+  delivery_time INT,
+  delivery_rating INT,
+  restaurant_rating INT
 );
 ```
 
