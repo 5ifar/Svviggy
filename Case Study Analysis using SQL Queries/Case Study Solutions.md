@@ -28,7 +28,7 @@
 ### 1. How many customers have not placed any orders?
 
 **Steps:**
-- Use NOT IN operator to select user_id values that are not present among user_id values in the orders table.
+- Use `NOT IN` operator to select `user_id` values that are not present among `user_id` values in the `orders` table.
 
 **Query:**
 ```sql
@@ -47,6 +47,50 @@ WHERE user_id NOT IN (SELECT DISTINCT user_id FROM orders);
 
 **Insight:**
 - Anupama & Rishabh have not placed any orders.
+
+---
+
+### 2A. What is the average price of each food type?
+
+**Steps:**
+- Implement INNER JOIN to merge `food` and `menu` tables based on `f_id` fields.
+- Group the result by `type` field to calculate the average price based on food type based groups rounded to 2 decimal places.
+
+**Query:**
+```sql
+SELECT
+  type AS "Food Type",
+  ROUND(AVG(price), 2) AS "Average Price"
+FROM food AS f
+INNER JOIN menu AS m ON f.f_id = m.f_id
+GROUP BY type;
+```
+
+**Alternate Query: Implemented using CTEs**
+```sql
+WITH food_details AS(
+  SELECT * FROM food f
+  INNER JOIN menu m
+  ON f.f_id = m.f_id
+)
+SELECT
+  type,
+  ROUND(AVG(price),2) AS "Average Price",
+  MEDIAN(price) AS "Median Price",
+  STATS_MODE(price) AS "Mode Price"
+FROM food_details
+GROUP BY type
+ORDER BY "Average Price" DESC;
+```
+
+**Answer:**
+|Food Type|Average Price|
+|-|-|
+|Non-veg|326.67|
+|Veg|181.25|
+
+**Insight:**
+- Average price of Non-Veg and Veg food is $ 326.67 and $ 181.25 respectively.
 
 ---
 
