@@ -54,7 +54,7 @@ WHERE user_id NOT IN (SELECT DISTINCT user_id FROM orders);
 
 **Steps:**
 - Implement INNER JOIN to merge `food` and `menu` tables based on `f_id` fields.
-- Group the result by `type` field to calculate the average price based on food type based groups rounded to 2 decimal places.
+- Group the result by `type` field to calculate the average price of food based on food type groups rounded to 2 decimal places.
 
 **Query:**
 ```sql
@@ -70,8 +70,7 @@ GROUP BY type;
 ```sql
 WITH food_details AS(
   SELECT * FROM food f
-  INNER JOIN menu m
-  ON f.f_id = m.f_id
+  INNER JOIN menu m ON f.f_id = m.f_id
 )
 SELECT
   type,
@@ -94,3 +93,86 @@ ORDER BY "Average Price" DESC;
 
 ---
 
+### 2b. What is the average price per food across restaurants?
+
+**Steps:**
+- Implement INNER JOIN to merge `food` and `menu` tables based on `f_id` fields.
+- Group the result by `f_name` field to calculate the average price of food based on food groups across restaurants rounded to 2 decimal places.
+- Order the result by `"Average Price"` in ascending order.
+
+**Query:**
+```sql
+SELECT
+  f_name AS "Food",
+  ROUND(AVG(m.price), 2) AS "Average Price"
+FROM food AS f
+INNER JOIN menu AS m ON f.f_id = m.f_id
+GROUP BY f_name
+ORDER BY "Average Price";
+```
+
+**Answer:**
+|Food|Average Price|
+|-|-|
+|Choco Lava cake|98.33|
+|Rava Idli|120.00|
+|Roti meal|140.00|
+|Masala Dosa|180.00|
+|Veg Manchurian|180.00|
+|Rice Meal|213.33|
+|Schezwan Noodles|220.00|
+|Chicken Wings|230.00|
+|Chicken Popcorn|300.00|
+|Veg Pizza|400.00|
+|Non-veg Pizza|450.00|
+
+**Insight:**
+- Across restaurants, Choco Lava cake has the lowest average price at $ 98.33, while Non-veg Pizza has the highest average price at $ 450.
+
+---
+
+### 2c. What is the average price of food for each restaurant?
+
+**Steps:**
+- Implement INNER JOIN to merge `restaurants` and `menu` tables based on `r_id` fields.
+- Group the result by `r_name` field to calculate the average price of food based on restaurant groups rounded to 2 decimal places.
+- Order the result by `"Average Price"` in ascending order.
+
+**Query:**
+```sql
+SELECT
+  r_name AS "Restaurant Name",
+  ROUND(AVG(price), 2) AS "Average Price"
+FROM menu AS m
+INNER JOIN restaurants AS r ON m.r_id = r.r_id
+GROUP BY r_name
+ORDER BY "Average Price";
+```
+
+**Alternate Query: Implemented using CTEs**
+```sql
+WITH restaurant_details AS (
+  SELECT * FROM restaurants AS r
+  INNER JOIN menu AS m ON r.r_id = m.r_id
+)
+SELECT
+  r_name AS "Restaurant Name",
+  '$ '||ROUND(AVG(price),2) AS "Average Price"
+FROM restaurant_details
+GROUP BY r_name
+ORDER BY r_name;
+```
+
+**Answer:**
+|Restaurant Name|Average Price|
+|-|-|
+|box8|126.67|
+|Dosa Plaza|176.67|
+|kfc|215.00|
+|China Town|216.67|
+|dominos|316.67|
+
+**Insight:**
+- Dominos is the most expensive restaurant with an average price of $ 316.67, while Box8 is the least expensive restaurant with an average price of $ 126.67
+
+---
