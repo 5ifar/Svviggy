@@ -28,7 +28,7 @@
 ### 1. How many customers have not placed any orders?
 
 **Steps:**
-- Use `NOT IN` operator to select `user_id` values that are not present among `user_id` values in the `orders` table.
+- Use `NOT IN` operator to select `user_id` values in the `users` table that are not present among `user_id` values in the `orders` table.
 
 **Query:**
 ```sql
@@ -93,7 +93,7 @@ ORDER BY "Average Price" DESC;
 
 ---
 
-### 2b. What is the average price per food across restaurants?
+### 2B. What is the average price per food across restaurants?
 
 **Steps:**
 - Implement INNER JOIN to merge `food` and `menu` tables based on `f_id` fields.
@@ -131,7 +131,7 @@ ORDER BY "Average Price";
 
 ---
 
-### 2c. What is the average price of food for each restaurant?
+### 2C. What is the average price of food for each restaurant?
 
 **Steps:**
 - Implement INNER JOIN to merge `restaurants` and `menu` tables based on `r_id` fields.
@@ -176,3 +176,35 @@ ORDER BY r_name;
 - Dominos is the most expensive restaurant with an average price of $ 316.67, while Box8 is the least expensive restaurant with an average price of $ 126.67
 
 ---
+
+### 3A. Find the top restaurant in terms of the number of orders for the month of June.
+
+**Steps:**
+- Implement LEFT JOIN to merge `restaurants` and `orders` tables based on `r_id` fields to ensure all `r_id` fields are considered from `orders` table even if they are missing in the `restaurants` lookup table.
+- Filter the results for the month of June using either the EXTRACT or TO_CHAR functions.
+- Group the result by `r_name` field to calculate the total count of `order_id` fields based on restaurant groups.
+- Order the result by `"Order Count"` in descending order and LIMIT results to the top 1.
+
+**Query:**
+```sql
+SELECT
+  r_name AS “Restaurant Name”,
+  COUNT(order_id) AS “Order Count”
+FROM orders AS o
+LEFT JOIN restaurants AS r ON o.r_id = r.r_id
+WHERE EXTRACT(MONTH FROM date) = 6
+GROUP BY r_name
+ORDER BY “Order Count” DESC
+LIMIT 1;
+```
+
+**Alternate Query:**
+Instead of EXTRACT Function, `TRIM(TO_CHAR(date, 'Month')) = 'June'` can also be used. The reason we use TRIM function is because TO_CHAR() takes the trailing spaces. So TRIM is used to remove any unecessary space.
+
+**Answer:**
+|Restaurant Name|Order Count|
+|-|-|
+|kfc|3|
+
+**Insight:**
+- KFC is the restaurant from where highest number of orders were made in the month of June.
