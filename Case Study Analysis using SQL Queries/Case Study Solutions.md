@@ -264,3 +264,34 @@ ORDER BY Order_Month ASC, Order_Count DESC;
 - Top restaurant in terms of the number of orders was Dosa Plaza for May and KFC for June and July.
 
 ---
+
+### 4. Find restaurants with monthly revenue greater than 500 in the month of June.
+
+**Steps:**
+- Implement LEFT JOIN to merge `restaurants` and `orders` tables based on `r_id` fields to ensure all `r_id` fields are considered from `orders` table even if they are missing in the `restaurants` lookup table.
+- Filter the results for the month of June using either the EXTRACT or TO_CHAR functions.
+- Group the result by `r_name` field to calculate the sum of `amount` fields based on restaurant groups.
+- Filter the aggregated results based on if the sum of `amount` fields for a restaurant is greater than 500.
+
+**Query: Implemented using CTEs**
+```sql
+SELECT
+  r_name AS "Restaurant Name",
+  SUM(amount) AS "Monthly Revenue"
+FROM orders AS o
+LEFT JOIN restaurants AS r ON o.r_id = r.r_id
+WHERE EXTRACT(MONTH FROM date) = 6
+GROUP BY r_name
+HAVING SUM(amount) > 500
+```
+
+**Output:**
+|Restaurant Name|Monthly Revenue|
+|-|-|
+|dominos|950|
+|kfc|990|
+
+**Insight:**
+- Dominos & KFC had monthly revenues greater than 500 in June.
+
+---
