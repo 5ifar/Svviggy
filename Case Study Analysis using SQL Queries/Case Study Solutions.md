@@ -39,7 +39,7 @@ FROM users
 WHERE user_id NOT IN (SELECT DISTINCT user_id FROM orders);
 ```
 
-**Answer:**
+**Output:**
 |User Id|Customer Name|
 |-|-|
 |6|Anupama|
@@ -82,7 +82,7 @@ GROUP BY type
 ORDER BY "Average Price" DESC;
 ```
 
-**Answer:**
+**Output:**
 |Food Type|Average Price|
 |-|-|
 |Non-veg|326.67|
@@ -111,7 +111,7 @@ GROUP BY f_name
 ORDER BY "Average Price";
 ```
 
-**Answer:**
+**Output:**
 |Food|Average Price|
 |-|-|
 |Choco Lava cake|98.33|
@@ -163,7 +163,7 @@ GROUP BY r_name
 ORDER BY r_name;
 ```
 
-**Answer:**
+**Output:**
 |Restaurant Name|Average Price|
 |-|-|
 |box8|126.67|
@@ -199,12 +199,68 @@ LIMIT 1;
 ```
 
 **Alternate Query:**
+
 Instead of EXTRACT Function, `TRIM(TO_CHAR(date, 'Month')) = 'June'` can also be used. The reason we use TRIM function is because TO_CHAR() takes the trailing spaces. So TRIM is used to remove any unecessary space.
 
-**Answer:**
+**Output:**
 |Restaurant Name|Order Count|
 |-|-|
 |kfc|3|
 
 **Insight:**
-- KFC is the restaurant from where highest number of orders were made in the month of June.
+- Highest number of orders were made in the month of June from KFC.
+
+---
+
+### 3B. Find the top restaurant in terms of the number of orders for all months.
+
+**Steps:**
+- to be added
+
+**Query: Implemented using CTEs**
+```sql
+WITH res AS (
+  SELECT
+    TO_CHAR(o.date, 'Month') AS order_month, 
+    r.r_name, COUNT(*) AS order_count
+  FROM orders o
+  INNER JOIN restaurants r ON o.r_id = r.r_id
+  GROUP BY EXTRACT(month FROM o.date), TO_CHAR(o.date, 'Month'), r.r_name
+)
+SELECT
+  order_month AS "Order Month",
+  r_name AS "Restaurant Name",
+  order_count AS "Total Orders"
+FROM (
+  SELECT
+    order_month, r_name, order_count,
+    RANK() OVER (PARTITION BY order_month ORDER BY order_count DESC) AS res_rank
+  FROM res
+) AS subquery
+WHERE res_rank = 1
+ORDER BY EXTRACT(month FROM TO_DATE(order_month, 'Month'));
+```
+
+**Alternate Query: Less Optimized but Simpler**
+```sql
+SELECT
+  r_name AS Restaurant_Name,
+  EXTRACT(MONTH FROM date) AS Order_Month,
+  COUNT(order_id) AS Order_Count
+FROM orders AS o
+LEFT JOIN restaurants AS r ON o.r_id = r.r_id 
+GROUP BY EXTRACT(MONTH FROM date), r_name
+ORDER BY Order_Month ASC, Order_Count DESC;
+```
+
+**Output:**
+|Order Month|Restaurant Name|Total Orders|
+|-|-|-|
+|May|Dosa Plaza|3|
+|June|kfc|3|
+|July|kfc|3|
+
+**Insight:**
+- Top restaurant in terms of the number of orders was Dosa Plaza for May and KFC for June and July.
+
+---
