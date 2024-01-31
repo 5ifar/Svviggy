@@ -273,7 +273,7 @@ ORDER BY Order_Month ASC, Order_Count DESC;
 - Group the result by `r_name` field to calculate the sum of `amount` fields based on restaurant groups.
 - Filter the aggregated results based on if the sum of `amount` fields for a restaurant is greater than 500.
 
-**Query: Implemented using CTEs**
+**Query:**
 ```sql
 SELECT
   r_name AS "Restaurant Name",
@@ -293,5 +293,43 @@ HAVING SUM(amount) > 500
 
 **Insight:**
 - Dominos & KFC had monthly revenues greater than 500 in June.
+
+---
+
+### 5. Show all orders with order details for a particular customer (user_id is 4) in a date range (1st June 2022 to 1st August 2022).
+
+**Steps:**
+- Implement INNER JOIN to merge `orders` table with `users`, `restaurants`, `order_details` and `food` tables based on `user_id`, `r_id`, `order_id` and `f_id` fields respectively.
+- Filter the results for `user_id` 4 and `date` range between '01-06-22' and '01-08-22'.
+
+**Query:**
+```sql
+SELECT
+  o.order_id AS "Order Id",
+  r_name AS "Restaurant Name",
+  f_name AS "Food"
+FROM orders AS o
+INNER JOIN users AS u ON o.user_id = u.user_id
+INNER JOIN restaurants AS r ON o.r_id = r.r_id
+INNER JOIN order_details AS od ON o.order_id = od.order_id
+INNER JOIN food AS f ON od.f_id = f.f_id
+WHERE o.user_id = 4 AND date between to_date('01-06-22','DD-MM-YY') and to_date('01-08-22','DD-MM-YY');
+```
+
+**Note:**
+- `to_date` operator allows us to enter values in our preferred date format, if not used we need to mandatorily enter in `YYYY-MM-DD` format as followed in the `orders` table.
+
+**Output:**
+|Order Id|Restaurant Name|Food|
+|-|-|-|
+|1018|Dosa Plaza|Schezwan Noodles|
+|1018|Dosa Plaza|Veg Manchurian|
+|1019|China Town|Schezwan Noodles|
+|1019|China Town|Veg Manchurian|
+|1020|China Town|Schezwan Noodles|
+|1020|China Town|Veg Manchurian|
+
+**Insight:**
+- Customer with user_id 4 ordered Schezwan Noodles and Veg Manchurian from Dosa Plaza and China Town between 1st June 2022 and 1st Aug 2022.
 
 ---
