@@ -1,5 +1,4 @@
-# 🥡 Svviggy Case Study
-<img src="https://logolook.net/wp-content/uploads/2023/04/Swiggy-Emblem.png" width="20%" height="20%">
+# <img src="https://logolook.net/wp-content/uploads/2023/04/Swiggy-Emblem.png" width="7%" height="7%"> Svviggy Case Study
 
 ---
 
