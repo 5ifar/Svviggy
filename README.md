@@ -1,4 +1,4 @@
-# 🥡 Svviggy
+# <img src="https://logolook.net/wp-content/uploads/2023/04/Swiggy-Emblem.png" width="7%" height="7%"> Svviggy
 This repository serves as my documentation for the Swiggy Clone Mock SQL Database Project.
 
 It showcases my competancy to tackle various SQL challenges and demonstrates my proficiency in SQL query writing and problem-solving skills.
