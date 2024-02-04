@@ -333,3 +333,65 @@ WHERE o.user_id = 4 AND date between to_date('01-06-22','DD-MM-YY') and to_date(
 - Customer with user_id 4 ordered Schezwan Noodles and Veg Manchurian from Dosa Plaza and China Town between 1st June 2022 and 1st Aug 2022.
 
 ---
+
+### 6. Which restaurant has the highest number of repeat customers?
+
+**Steps:**
+- Create a subquery to group `orders` table data by `r_id` and `user_id` fields and filter results for groups with more than 1 count of `order_id` field based on restaurant and user pair groups. Alias the subquery as `rcr`.
+- Implement INNER JOIN to merge `restaurants` table with the `rcr` subquery based on `r_id` field.
+- Group the results by `r_id` and `r_name` fields and filter the top 1 row based on descending sort by `COUNT(user_id)`.
+- Alias the `COUNT(user_id)` column of the filtered row as “Total Repeat Customers” for the restaurant.
+
+**Query:**
+```sql
+SELECT
+  rcr.r_id,
+  r_name AS "Restaurant Name",
+  COUNT (user_id) AS "Total Repeat Customers"
+FROM
+(SELECT
+  r_id, user_id,
+  COUNT(order_id) AS visits
+FROM orders
+GROUP BY r_id, user_id
+HAVING COUNT(order_id) > 1) AS rcr
+INNER JOIN restaurants AS r ON rcr.r_id = r.r_id
+GROUP BY rcr.r_id, r_name
+ORDER BY COUNT (user_id) DESC
+LIMIT 1;
+-- rcr alias denotes Repeat Customer Restaurants
+```
+
+**Alternate Query: Implemented using CTEs**
+```sql
+WITH repeated_cust AS (
+SELECT
+  r.r_name, o.user_id,
+  count(order_id) as order_count
+FROM restaurants AS r
+INNER JOIN orders AS o ON r.r_id = o.r_id
+GROUP BY r.r_name, o.user_id
+HAVING COUNT(order_id) > 1
+),
+loyal_cust AS (
+SELECT
+  r_name AS "Restaurant Name",
+  COUNT(user_id) AS "Total Repeat Customers"
+FROM repeated_cust
+GROUP BY r_name
+ORDER BY COUNT(user_id) DESC
+LIMIT 1
+)
+SELECT * FROM loyal_cust;
+```
+
+**Output:**
+|r_id|Restaurant Name|Total Repeat Customers|
+|-|-|-|
+|2|kfc|2|
+
+**Insight:**
+- KFC is the restaurant with the highest count of 2 repeat customers.
+
+---
+
