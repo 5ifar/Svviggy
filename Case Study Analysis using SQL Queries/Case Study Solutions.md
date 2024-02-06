@@ -394,3 +394,41 @@ SELECT * FROM loyal_cust;
 
 ---
 
+### 7. Find the most loyal customer for all restaurants.
+
+**Steps:**
+- 
+
+**Query:**
+```sql
+SELECT
+  rcr.r_id,
+  r_name AS "Restaurant Name",
+  name AS "Loyal Customer"
+FROM 
+(SELECT
+  r_id, user_id,
+  COUNT(order_id) AS visits FROM orders
+GROUP BY r_id, user_id
+HAVING COUNT(order_id) > 1) AS rcr
+INNER JOIN restaurants AS r ON rcr.r_id = r.r_id
+INNER JOIN users AS u ON u.user_id = rcr.user_id
+GROUP BY rcr.r_id, r_name, name
+ORDER BY rcr.r_id;
+-- rcr alias denotes Repeat Customer Restaurants
+```
+
+**Output:**
+|r_id|Restaurant Name|Loyal Customers|
+|-|-|-|
+|1|dominos|Neha|
+|2|kfc|Neha|
+|2|kfc|Vartika|
+|3|box8|Nitish|
+|4|Dosa Plaza|Ankit|
+|5|China Town|Ankit|
+
+**Insight:**
+- KFC is the only restaurant with 2 Most Loyal Customers.
+
+---
