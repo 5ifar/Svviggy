@@ -487,6 +487,13 @@ FROM (
 |7|4845|3220|50.47|
 
 **Insight:**
-- Month-Over-Month Revenue Growth Rate seems to be increasing steadily with 32.78% in June and 50.47% in July.
+- Svviggy's Month-Over-Month Revenue Growth Rate seems to be increasing steadily with 32.78% in June and 50.47% in July.
+
+---
+
+### 9. Calculate Month-over-Month revenue growth of a specific restaurant.
+
+**Steps:**
+- Follow the same steps as above Q.8, additionally add the filter for `r_id` field value of the restaurant required in the WHERE clause of `Monthly Revenue Subquery`.
 
 ---
