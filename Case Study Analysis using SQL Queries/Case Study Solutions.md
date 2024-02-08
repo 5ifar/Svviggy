@@ -397,7 +397,10 @@ SELECT * FROM loyal_cust;
 ### 7. Find the most loyal customer for all restaurants.
 
 **Steps:**
-- 
+- Create a subquery to group `orders` table data by `r_id` and `user_id` fields and filter results for groups with more than 1 count of `order_id` field based on restaurant and user pair groups. Alias the subquery as `rcr`.
+- Implement INNER JOIN to merge `restaurants` table with the `rcr` subquery based on `r_id` field.
+- Implement INNER JOIN to merge `users` table with the `rcr` subquery based on `user_id` field.
+- Group the results by `r_id`, `r_name` and `name` fields and order the result by `r_id` field.
 
 **Query:**
 ```sql
@@ -430,5 +433,60 @@ ORDER BY rcr.r_id;
 
 **Insight:**
 - KFC is the only restaurant with 2 Most Loyal Customers.
+
+---
+
+### 8. Calculate Month-over-Month revenue growth of Svviggy.
+
+**Steps:**
+- Create a subquery to group `orders` table data by `Month` and calculate `SUM(amount)` as Current Month Revenue of Svviggy. Alias the subquery as `Monthly Revenue Subquery`.
+- Create a subquery with `Monthly Revenue Subquery` nested inside it to calculate the Previous Month Revenue using the `LAG` operator to select the previous 1 month revenue when ordered by `Month`.
+- Based on Current Month Revenue and Previous Month Revenue values calculate the growth percentage compared to Previous Month Revenue. Round the result to 2 decimals. Alias as `Growth%`.
+
+**Query:**
+```sql
+SELECT
+  Month, "Current Revenue", "Previous Revenue",
+  ROUND(("Current Revenue" - "Previous Revenue") / "Previous Revenue"::numeric * 100, 2) AS "Growth%"
+FROM
+  (SELECT
+    Month, "Current Revenue",
+    LAG("Current Revenue", 1) OVER (ORDER BY Month ASC) AS "Previous Revenue"
+  FROM
+    (SELECT
+      EXTRACT(MONTH FROM date) AS Month,
+      SUM(amount) AS "Current Revenue"
+    FROM orders
+    GROUP BY Month
+    ORDER BY Month) AS "Monthly Revenue Subquery"
+  ) AS "Month-over-Month Revenue Subquery";
+```
+
+**Alternate Query: Implemented using CTEs**
+```sql
+WITH sales AS (
+  SELECT
+  EXTRACT(MONTH FROM date) AS month,
+  SUM(amount) AS revenue
+  FROM orders
+  GROUP BY EXTRACT(MONTH FROM date)
+  ORDER BY EXTRACT(MONTH FROM date) ASC
+)
+SELECT month, revenue, prev_revenue, (revenue - prev_revenue) / prev_revenue::numeric * 100 AS growth
+FROM (
+  SELECT month, revenue, LAG(revenue, 1) OVER (ORDER BY month ASC) AS prev_revenue
+  FROM sales
+) AS monthly_revenue;
+```
+
+**Output:**
+|Month|Current Revenue|Previous Revenue|Growth%|
+|-|-|-|-|
+|5|2425|[null]|[null]|		
+|6|3220|2425|32.78|
+|7|4845|3220|50.47|
+
+**Insight:**
+- Month-Over-Month Revenue Growth Rate seems to be increasing steadily with 32.78% in June and 50.47% in July.
 
 ---
