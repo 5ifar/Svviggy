@@ -440,7 +440,7 @@ ORDER BY rcr.r_id;
 
 **Steps:**
 - Create a subquery to group `orders` table data by `Month` and calculate `SUM(amount)` as Current Month Revenue of Svviggy. Alias the subquery as `Monthly Revenue Subquery`.
-- Create a subquery with `Monthly Revenue Subquery` nested inside it to calculate the Previous Month Revenue using the `LAG` operator to select the previous 1 month revenue when ordered by `Month`.
+- Create a subquery with `Monthly Revenue Subquery` nested inside it to calculate the Previous Month Revenue using the `LAG` operator to select the previous 1 month revenue when ordered by `Month`. Alias the subquery as `Month-over-Month Revenue Subquery`.
 - Based on Current Month Revenue and Previous Month Revenue values calculate the growth percentage compared to Previous Month Revenue. Round the result to 2 decimals. Alias as `Growth%`.
 
 **Query:**
