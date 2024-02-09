@@ -738,3 +738,52 @@ ORDER BY "Average Delivery Rating" DESC;
 
 ---
 
+### 16. How do the ratings for restaurants and delivery partners correlate with customer retention?
+
+**Steps:**
+1. For `group_1` CTE:
+   - Implement INNER JOIN to merge `orders` table with the `restaurants` table based on `r_id` field.
+   - Group the results by `r_name` field and calculte the average of `restaurant_rating` field and distinct count of `user_id` field based on restaurant group.
+2. For `group_2` CTE:
+   - Implement INNER JOIN to merge `orders` table with the `delivery_partners` table based on `partner_id` field.
+   - Group the results by `partner_name` field and calculte the average of `delivery_rating` field and distinct count of `user_id` field based on partner group.
+3. Joining both CTEs:
+   -  Implement INNER JOIN to merge `group_1` CTE with the `group_2` CTE based on `unique_users` field.
+   -  Implement the `CORR` operator to calculate the coefficient of correlation between `avg_restaurant_rating` and `avg_delivery_rating` fields.
+
+**Queries:**
+```sql
+WITH group_1 AS (
+  SELECT
+    r.r_name,
+    COUNT(DISTINCT o.user_id) AS unique_users,
+    AVG(o.restaurant_rating) AS avg_restaurant_rating
+  FROM orders AS o
+  INNER JOIN restaurants AS r ON o.r_id = r.r_id
+  GROUP BY r.r_name
+),
+group_2 AS (
+  SELECT
+    dp.partner_name,
+    COUNT(DISTINCT o.user_id) AS unique_users,
+    AVG(o.delivery_rating) AS avg_delivery_rating
+  FROM orders AS o
+  INNER JOIN delivery_partners AS dp ON o.partner_id = dp.partner_id
+  GROUP BY dp.partner_name
+)
+SELECT
+  CORR(AVG_RESTAURANT_RATING, AVG_DELIVERY_RATING) AS "Coefficient of Correlation"
+FROM group_1 AS g1
+INNER JOIN group_2 AS g2 ON g1.UNIQUE_USERS = g2.UNIQUE_USERS;
+```
+
+**Output:**
+|Coefficient of Correlation|
+|-|
+|0.7074762526640902|
+
+**Insight:**
+- The average of restaurant rating and average of delivery rating has a coefficient of Correlation of approximately 0.7, indicating a strong positive correlation.
+
+---
+
