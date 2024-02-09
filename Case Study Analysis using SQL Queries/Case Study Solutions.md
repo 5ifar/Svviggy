@@ -497,3 +497,50 @@ FROM (
 - Follow the same steps as above Q.8, additionally add the filter for `r_id` field value of the restaurant required in the WHERE clause of `Monthly Revenue Subquery`.
 
 ---
+
+### 10. Find the top 3 most ordered foods.
+
+**Steps:**
+- Implement INNER JOIN to merge `order_details` table with the `food` table based on `f_id` field.
+- Group the results by `f_name` field and calculte the total count of `order_id` fields based on food group and order them by the count in descending order.
+- Use the FETCH operator to get only the top 3 rows.
+
+**Query:**
+```sql
+SELECT
+  f_name AS "Food",
+  COUNT(order_id) AS "Order Count"
+FROM order_details AS od
+INNER JOIN food AS f ON f.f_id = od.f_id
+GROUP BY f_name
+ORDER BY "Order Count" DESC
+FETCH FIRST 3 ROWS ONLY;
+```
+
+**Alternate Query: Using DENSE_RANK**
+```sql
+SELECT
+  f_name,
+  order_count
+FROM (
+  SELECT
+    f_name, COUNT(order_id) AS order_count, 
+    DENSE_RANK () OVER(ORDER BY COUNT(order_id) DESC) AS rank
+  FROM order_details AS od
+  INNER JOIN food AS f ON f.f_id = od.f_id
+  GROUP BY f_name) AS "Rank Subquery"
+WHERE rank <= 3;
+```
+
+**Output:**
+|Food|Order Count|
+|-|-|
+|Choco Lava cake|13|
+|Chicken Wings|8|
+|Non-veg Pizza|5|
+
+**Insight:**
+- Choco Lava Cake, Chicken Wings & Non-veg Pizza are the Top 3 most ordered foods.
+
+---
+
