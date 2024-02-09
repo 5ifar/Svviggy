@@ -751,7 +751,7 @@ ORDER BY "Average Delivery Rating" DESC;
    -  Implement INNER JOIN to merge `group_1` CTE with the `group_2` CTE based on `unique_users` field.
    -  Implement the `CORR` operator to calculate the coefficient of correlation between `avg_restaurant_rating` and `avg_delivery_rating` fields.
 
-**Queries:**
+**Query:**
 ```sql
 WITH group_1 AS (
   SELECT
@@ -787,3 +787,96 @@ INNER JOIN group_2 AS g2 ON g1.UNIQUE_USERS = g2.UNIQUE_USERS;
 
 ---
 
+### 17. Which days and times see the highest order volume, and are there any patterns in user behaviour?
+
+**Steps:**
+- Group the `orders` table by `TO_CHAR(date, 'DAY')` and `TO_CHAR(date, 'HH24')` fields representing the Order day and Order hour and calculte the count of `order_id` field based on Day and Hour group.
+
+**Query:**
+```sql
+SELECT
+  TO_CHAR(date, 'DAY') AS "Order Day", 
+  TO_CHAR(date, 'HH24') AS "Order Hour", 
+  COUNT(order_id) AS "Order Count"
+FROM orders
+GROUP BY TO_CHAR(date, 'DAY'), TO_CHAR(date, 'HH24')
+ORDER BY "Order Count" DESC;
+```
+
+**Output:**
+|Order Day|Order Hour|Order Count|
+|-|-|-|
+|FRIDAY|00|6|
+|THURSDAY|00|6|
+|WEDNESDAY|00|4|
+|SUNDAY|00|4|
+|MONDAY|00|2|
+|TUESDAY|00|2|
+|SATURDAY|00|1|
+
+**Insight:**
+- Friday and Thursday has the highest order volume of 6 orders. No hourly data available for analysis.
+
+---
+
+### 18. How many orders were delivered by each delivery partner and what is their average delivery rating?
+
+**Steps:**
+- Implement INNER JOIN to merge `orders` table with the `delivery_partners` table based on `partner_id` field.
+- Group the results by `partner_name` field and calculte the average of `delivery_rating` field rounded to 2 decimal places and count of `user_id` field based on partner group.
+- Arrange the result by `"Delivery Count"` in descending order.
+
+**Query:**
+```sql
+SELECT
+  dp.partner_name AS "Partner Name",
+  COUNT(order_id) AS "Delivery Count", 
+  ROUND(AVG(o.delivery_rating), 2) AS "Average Delivery Rating"
+FROM orders AS o
+INNER JOIN delivery_partners AS dp ON o.partner_id = dp.partner_id
+GROUP BY dp.partner_name
+ORDER BY "Delivery Count" DESC;
+```
+
+**Output:**
+|Partner Name|Delivery Count|Average Delivery Rating|
+|-|-|-|
+|Suresh|7|2.86|
+|Amit|6|3.00|
+|Lokesh|4|4.00|
+|Gyandeep|4|3.50|
+|Kartik|4|3.00|
+
+**Insight:**
+- Suresh delivered the highest count of 7 orders while Lokesh has the highest delivery rating of 4.
+
+---
+
+### 19. What is the distribution of delivery partners in the Delivery Partners table?
+
+**Steps:**
+- Group the `delivery_partners` table by `partner_name` field and calculte the count of rows based on partner group. Arrange the result by `"Partner Count"` in descending order.
+
+**Query:**
+```sql
+SELECT
+  partner_name AS "Partner Name",
+  COUNT(*) AS "Partner Count" 
+FROM delivery_partners 
+GROUP BY partner_name 
+ORDER BY "Partner Count" DESC;
+```
+
+**Output:**
+|Partner Name|Partner Count|
+|-|-|
+|Lokesh|1|
+|Gyandeep|1|
+|Kartik|1|
+|Amit|1|
+|Suresh|1|
+
+**Insight:**
+- The delivery partners in the Delivery Partners table follow discrete uniform distribution.
+
+---
