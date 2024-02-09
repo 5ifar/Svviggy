@@ -498,7 +498,7 @@ FROM (
 
 ---
 
-### 9. Month over month revenue growth of each restaurant collated.
+### 9. Month-over-Month revenue growth of each restaurant collated.
 
 **Steps:**
 - Beyond my current competency, to be attempted soon.
@@ -548,6 +548,51 @@ WHERE rank <= 3;
 
 **Insight:**
 - Choco Lava Cake, Chicken Wings & Non-veg Pizza are the Top 3 most ordered foods.
+
+---
+
+### 11. Find the favourite food for each customer and its order frequency. 
+
+**Steps:**
+- to be added
+
+**Query:**
+```sql
+WITH food_info AS (
+ SELECT
+  o.user_id, od.f_id,
+  count(*) as frequency
+ FROM orders AS o
+ INNER JOIN order_details AS od ON od.order_id = o.order_id
+ GROUP BY o.user_id, od.f_id 
+ ORDER BY o.user_id ASC
+)
+SELECT
+  t1.user_id, u.name,
+  f.f_name AS "Food",
+  frequency AS "Order Frequency"
+FROM food_info AS t1
+INNER JOIN users AS u ON u.user_id = t1.user_id
+INNER JOIN food AS f ON f.f_id = t1.f_id
+WHERE t1.frequency = 
+  (SELECT MAX(frequency) 
+   FROM food_info AS t2
+   WHERE t2.user_id = t1.user_id)
+ORDER BY frequency DESC;
+```
+
+**Output:**
+|user_id|name|Food|Order Frequency|
+|-|-|-|-|
+|1|Nitish|Choco Lava cake|5|
+|5|Neha|Choco Lava cake|5|
+|2|Khushboo|Choco Lava cake|3|
+|3|Vartika|Chicken Wings|3|
+|4|Ankit|Schezwan Noodles|3|
+|4|Ankit|Veg Manchurian|3|
+
+**Insight:**
+- Choco Lava cake is the favourite food for 3 customers with the highest order frequency of 5 for Nitish and Neha.
 
 ---
 
