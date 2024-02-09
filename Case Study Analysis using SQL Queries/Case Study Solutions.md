@@ -11,13 +11,15 @@
 
 ## Introduction
 
---To be added--
+Svviggy is a free food delivery app. It is available on iPhone and Android devices.
+
+Users can order food from the app, organized by restaurants and their menus. The ordered food is delivered by delivery partners. The restaurants and delivery partners also have ratings given by users.
 
 ---
 
 ## Business Task
 
---To be added--
+Svviggy wants to use their data to answer a few simple questions about their users, especially about their food preferences & spending patterns, how much revenue they generate, when & how often the users order food, which food and restaurants are their favourite and the delivery partner rating patterns.
 
 ---
 
@@ -877,6 +879,6 @@ ORDER BY "Partner Count" DESC;
 |Suresh|1|
 
 **Insight:**
-- The delivery partners in the Delivery Partners table follow discrete uniform distribution.
+- The delivery partners in the delivery partners table follow Discrete Uniform Distribution.
 
 ---
