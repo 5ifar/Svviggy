@@ -436,7 +436,7 @@ ORDER BY rcr.r_id;
 
 ---
 
-### 8. Calculate Month-over-Month revenue growth of Svviggy.
+### 8A. Calculate Month-over-Month revenue growth of Svviggy.
 
 **Steps:**
 - Create a subquery to group `orders` table data by `Month` and calculate `SUM(amount)` as Current Month Revenue of Svviggy. Alias the subquery as `Monthly Revenue Subquery`.
@@ -491,10 +491,17 @@ FROM (
 
 ---
 
-### 9. Calculate Month-over-Month revenue growth of a specific restaurant.
+### 8B. Calculate Month-over-Month revenue growth of a specific restaurant.
 
 **Steps:**
 - Follow the same steps as above Q.8, additionally add the filter for `r_id` field value of the restaurant required in the WHERE clause of `Monthly Revenue Subquery`.
+
+---
+
+### 9. Month over month revenue growth of each restaurant collated.
+
+**Steps:**
+- Beyond my current competency, to be attempted soon.
 
 ---
 
