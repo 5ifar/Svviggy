@@ -656,3 +656,85 @@ ORDER BY "Avg Order Value" DESC;
 
 ---
 
+### 14. What is the average delivery time for each restaurant, and how does it affect customer satisfaction?
+
+**Steps:**
+- Implement INNER JOIN to merge `orders` table with the `restaurants` table based on `r_id` field.
+- Group the results by `r_name` field and calculte the average of `delivery_time` and `delivery_rating` fields based on restaurant group. Round the values to 2 decimal places. Order the outcome by `"Average Delivery Rating"` in descending order.
+
+**Query:**
+```sql
+SELECT
+  r_name AS "Restaurant Name",
+  ROUND(AVG(delivery_time), 2) as "Average Delivery Time",
+  ROUND(AVG(delivery_rating), 2) as "Average Delivery Rating"
+FROM orders AS o
+INNER JOIN restaurants AS r ON o.r_id = r.r_id
+GROUP BY r_name
+ORDER BY "Average Delivery Rating" DESC;
+```
+
+**Output:**
+|Restaurant Name|Average Delivery Time|Average Delivery Rating|
+|-|-|-|
+|dominos|24.40|4.00|
+|kfc|42.50|3.25|
+|box8|40.50|3.00|
+|Dosa Plaza|39.00|2.80|
+|China Town|54.33|2.67|
+
+**Insight:**
+- While the lowest average delivery time restaurant gets the highest rating and the highest average delivery time restaurant gets the lowest rating, the other restaurants (KFC & Dosa Plaza) dont follow the same correlation. While they can be considered as weakly correlated they do not imply causation.
+
+---
+
+### 15. What is the average rating for each restaurant and delivery partner?
+
+**Steps:**
+1. - Implement INNER JOIN to merge `orders` table with the `restaurants` table based on `r_id` field.
+   - Group the results by `r_name` field and calculte the average of `restaurant_rating` field based on restaurant group. Round the value to 2 decimal places. Order the outcome by `"Average Restaurant Rating"` in descending order.
+2. - Implement INNER JOIN to merge `orders` table with the `delivery_partners` table based on `partner_id` field.
+   - Group the results by `partner_name` field and calculte the average of `delivery_rating` field based on partner group. Round the value to 2 decimal places. Order the outcome by `"Average Delivery Rating"` in descending order.
+
+**Queries:**
+```sql
+SELECT
+  r_name AS "Restaurant Name",
+  ROUND(AVG(restaurant_rating), 2) AS "Average Restaurant Rating"
+FROM orders AS o
+INNER JOIN restaurants AS r ON o.r_id = r.r_id
+GROUP BY r_name
+ORDER BY "Average Restaurant Rating" DESC;
+
+SELECT
+  partner_name AS "Delivery Partner",
+  ROUND(AVG(delivery_rating), 2) AS "Average Delivery Rating"
+FROM orders AS o
+INNER JOIN delivery_partners AS dp ON o.partner_id = dp.partner_id
+GROUP BY partner_name
+ORDER BY "Average Delivery Rating" DESC;
+```
+
+**Outputs:**
+|Restaurant Name|Average Restaurant Rating|
+|-|-|
+|box8|4.67|
+|Dosa Plaza|3.67|
+|China Town|3.67|
+|kfc|2.20|
+|dominos|1.67|
+
+|Delivery Partner|Average Delivery Rating|
+|-|-|
+|Lokesh|4.00|
+|Gyandeep|3.50|
+|Kartik|3.00|
+|Amit|3.00|
+|Suresh|2.86|
+
+**Insights:**
+- Box8 has the highest average restaurant rating of 4.67 and Dominos has the lowest average restaurant rating of 1.67.
+- Lokesh has the highest average delivery rating of 4.00 and Suresh has the lowest average delivery rating of 2.86.
+
+---
+
