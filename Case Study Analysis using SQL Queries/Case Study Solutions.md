@@ -24,6 +24,8 @@
 ## Case Study Questions and Solutions
 *The following queries have been executed using PostgreSQL v15 on pgAdmin 4 GUI.*
 
+###### *NOTE: While I understand the importance of SQL query optimization, the column name aliases used in the queries below are long and certainly not optimized. This has been done in favour of readability of the outcome for an unassuming business end user and should not be treated as ignorance.*
+
 ### 1. How many customers have not placed any orders?
 
 **Steps:**
