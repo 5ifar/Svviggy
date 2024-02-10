@@ -3,7 +3,7 @@ This repository serves as my documentation for the Swiggy Clone Mock SQL Databas
 
 It showcases my competency to tackle various SQL challenges and demonstrates my proficiency in writing SQL queries and my problem-solving skills.
 
-The Svvigy Project Schema & Case Study Queries have been executed using PostgreSQL v15 on pgAdmin 4 GUI.
+The Svviggy Project Schema & Case Study Queries have been executed using PostgreSQL v15 on pgAdmin 4 GUI.
 
 ## 📚 Table of Contents
 Please find the resource links for the project below:
