@@ -513,7 +513,7 @@ FROM (
 
 **Steps:**
 - Implement INNER JOIN to merge `order_details` table with the `food` table based on `f_id` field.
-- Group the results by `f_name` field and calculte the total count of `order_id` fields based on food group and order them by the count in descending order.
+- Group the results by `f_name` field and calculate the total count of `order_id` fields based on food group and order them by the count in descending order.
 - Use the FETCH operator to get only the top 3 rows.
 
 **Query:**
@@ -631,7 +631,7 @@ WHERE date BETWEEN to_date('01-05-22','DD-MM-YY') AND to_date('01-06-22','DD-MM-
 
 **Steps:**
 - Implement INNER JOIN to merge `orders` table with the `users` table based on `user_id` field.
-- Group the results by `name` field and calculte the average of `amount` field based on user group. Round the `AVG(amount)` value to 2 decimal places. Order the outcome by `AVG(amount)` in descending order.
+- Group the results by `name` field and calculate the average of `amount` field based on user group. Round the `AVG(amount)` value to 2 decimal places. Order the outcome by `AVG(amount)` in descending order.
 
 **Query:**
 ```sql
@@ -662,7 +662,7 @@ ORDER BY "Avg Order Value" DESC;
 
 **Steps:**
 - Implement INNER JOIN to merge `orders` table with the `restaurants` table based on `r_id` field.
-- Group the results by `r_name` field and calculte the average of `delivery_time` and `delivery_rating` fields based on restaurant group. Round the values to 2 decimal places. Order the outcome by `"Average Delivery Rating"` in descending order.
+- Group the results by `r_name` field and calculate the average of `delivery_time` and `delivery_rating` fields based on restaurant group. Round the values to 2 decimal places. Order the outcome by `"Average Delivery Rating"` in descending order.
 
 **Query:**
 ```sql
@@ -694,9 +694,9 @@ ORDER BY "Average Delivery Rating" DESC;
 
 **Steps:**
 1. - Implement INNER JOIN to merge `orders` table with the `restaurants` table based on `r_id` field.
-   - Group the results by `r_name` field and calculte the average of `restaurant_rating` field based on restaurant group. Round the value to 2 decimal places. Order the outcome by `"Average Restaurant Rating"` in descending order.
+   - Group the results by `r_name` field and calculate the average of `restaurant_rating` field based on restaurant group. Round the value to 2 decimal places. Order the outcome by `"Average Restaurant Rating"` in descending order.
 2. - Implement INNER JOIN to merge `orders` table with the `delivery_partners` table based on `partner_id` field.
-   - Group the results by `partner_name` field and calculte the average of `delivery_rating` field based on partner group. Round the value to 2 decimal places. Order the outcome by `"Average Delivery Rating"` in descending order.
+   - Group the results by `partner_name` field and calculate the average of `delivery_rating` field based on partner group. Round the value to 2 decimal places. Order the outcome by `"Average Delivery Rating"` in descending order.
 
 **Queries:**
 ```sql
@@ -745,10 +745,10 @@ ORDER BY "Average Delivery Rating" DESC;
 **Steps:**
 1. For `group_1` CTE:
    - Implement INNER JOIN to merge `orders` table with the `restaurants` table based on `r_id` field.
-   - Group the results by `r_name` field and calculte the average of `restaurant_rating` field and distinct count of `user_id` field based on restaurant group.
+   - Group the results by `r_name` field and calculate the average of `restaurant_rating` field and distinct count of `user_id` field based on restaurant group.
 2. For `group_2` CTE:
    - Implement INNER JOIN to merge `orders` table with the `delivery_partners` table based on `partner_id` field.
-   - Group the results by `partner_name` field and calculte the average of `delivery_rating` field and distinct count of `user_id` field based on partner group.
+   - Group the results by `partner_name` field and calculate the average of `delivery_rating` field and distinct count of `user_id` field based on partner group.
 3. Joining both CTEs:
    -  Implement INNER JOIN to merge `group_1` CTE with the `group_2` CTE based on `unique_users` field.
    -  Implement the `CORR` operator to calculate the coefficient of correlation between `avg_restaurant_rating` and `avg_delivery_rating` fields.
@@ -792,7 +792,7 @@ INNER JOIN group_2 AS g2 ON g1.UNIQUE_USERS = g2.UNIQUE_USERS;
 ### 17. Which days and times see the highest order volume, and are there any patterns in user behaviour?
 
 **Steps:**
-- Group the `orders` table by `TO_CHAR(date, 'DAY')` and `TO_CHAR(date, 'HH24')` fields representing the Order day and Order hour and calculte the count of `order_id` field based on Day and Hour group.
+- Group the `orders` table by `TO_CHAR(date, 'DAY')` and `TO_CHAR(date, 'HH24')` fields representing the Order day and Order hour and calculate the count of `order_id` field based on Day and Hour group.
 
 **Query:**
 ```sql
@@ -825,7 +825,7 @@ ORDER BY "Order Count" DESC;
 
 **Steps:**
 - Implement INNER JOIN to merge `orders` table with the `delivery_partners` table based on `partner_id` field.
-- Group the results by `partner_name` field and calculte the average of `delivery_rating` field rounded to 2 decimal places and count of `user_id` field based on partner group.
+- Group the results by `partner_name` field and calculate the average of `delivery_rating` field rounded to 2 decimal places and count of `user_id` field based on partner group.
 - Arrange the result by `"Delivery Count"` in descending order.
 
 **Query:**
@@ -857,7 +857,7 @@ ORDER BY "Delivery Count" DESC;
 ### 19. What is the distribution of delivery partners in the Delivery Partners table?
 
 **Steps:**
-- Group the `delivery_partners` table by `partner_name` field and calculte the count of rows based on partner group. Arrange the result by `"Partner Count"` in descending order.
+- Group the `delivery_partners` table by `partner_name` field and calculate the count of rows based on partner group. Arrange the result by `"Partner Count"` in descending order.
 
 **Query:**
 ```sql
