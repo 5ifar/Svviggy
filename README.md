@@ -5,6 +5,8 @@ It showcases my competency to tackle various SQL challenges and demonstrates my 
 
 The Svviggy Project Schema & Case Study Queries have been executed using PostgreSQL v15 on pgAdmin 4 GUI.
 
+*NOTE: This repository has been intensionally named Svviggy and not Swiggy to avoid identity & data impersonation.*
+
 ## 📚 Table of Contents
 Please find the resource links for the project below:
 - [Svvigy Schema](https://github.com/5ifar/Svviggy/tree/main/Svviggy%20Schema)
